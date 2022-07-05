@@ -1,0 +1,19 @@
+.backdrop {
+    fill: #bbb;
+    border: 1px solid #bbb;
+}
+
+.axis{
+    font-size: 16px;
+}
+
+.titulo{
+    font-size: 16pt;
+    font-weight: bold;
+}
+
+.metrica{
+    font-size: 16pt;
+    background-color: #bbb;
+
+}

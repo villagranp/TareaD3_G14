@@ -1,0 +1,53 @@
+@import url("https://fonts.googleapis.com/css2?family=Barlow:wght@300;500;800&display=swap");
+
+body {
+  font-family: Barlow, sans-serif;
+}
+
+.graf {
+  border: 1px solid #22333b;
+  background-color: #eae0d5;
+}
+
+.backdrop {
+  fill: #f7ede2;
+}
+
+.axis {
+  font-size: 18px;
+  shape-rendering: geometricPrecision;
+}
+
+.year {
+  font-size: 130px;
+  fill: #ccc;
+}
+
+#tooltip {
+  background-color: #aaa;
+  padding: 5px;
+  border: 1px solid #555;
+  position: absolute;
+}
+
+#tooltip2 {
+  background-color: #aaa;
+  padding: 5px;
+  border: 1px solid #555;
+  position: absolute;
+}
+
+#tooltip .country {
+  font-size: 25px;
+  text-align: center;
+}
+
+#tooltip2 .country {
+  font-size: 25px;
+  text-align: center;
+}
+
+#tooltip .country-data {
+  color: #eee;
+  font-size: 10px;
+}

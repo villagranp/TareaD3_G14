@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="utf-8">    
+    <title>UNIR </title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.6/d3.min.js" charset="utf-8"></script>
+
+    <style type="text/css">
+      body {
+        background-color: #FFF;
+      }
+      .axis path,
+      .axis line {
+        fill:none;
+        stroke:black;
+        shape-rendering:crispEdges;
+      }
+      h1 {
+	  	font-size: 20px;
+		font-family: Georgia, "Times New Roman", Times, serif;
+		padding: 20px 0 10px 20px;
+		}
+	  h3 {
+        font-size: 14px;
+		font-family: Georgia, "Times New Roman", Times, serif;
+		font-weight: normal;
+   		max-width: 600px;
+    	padding: 0 0 10px 20px;
+    	border-bottom: 1px dashed #999;
+      }
+	  p {
+		font-size: 11px;
+		font-family: Georgia, "Times New Roman", Times, serif;
+		max-width: 600px;
+		padding: 5px;
+	  }
+	  p a {
+		font-weight: bold;
+		text-decoration: none;
+		color: #000000;
+	  }
+	  p a:hover {
+		text-decoration: underline;
+	  }
+      .axis text {
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 12px;
+      }
+      rect {
+        fill:#3ca0a0;
+      }
+      rect:hover {
+        fill:#999;        
+      }
+      .y.axis path {
+        stroke:none;
+      }
+      .y.axis line {
+        stroke:none;
+      }
+    </style>
+
+  </head>
+
+
+  <body>
+
+    <h1>Mujeres asesinadas por violencia de Genero 1er parte de cada año desde el 2003</h1>
+    <h3>Se muestra el numero de muertes que hubo los primeros 6 meses de cada año acumulado desde el 2003</h3>
+    <p style="padding-left: 20px;"> Fuente: <a href=" https://www.epdata.es/datos/violencia-genero-estadisticas-ultima-victima/109/espana/106" target="_blank">España - epdata</a> </p>
+
+    <script>
+      var widthGraph = 1200
+      var heightGraph = 800
+      
+      var paddingObject = {
+        top: 20,
+        left: 120,
+        bottom:60,
+        right: 20,
+      }
+      var svg = d3.select("body")
+            .append("svg")
+            .attr("width",widthGraph + paddingObject.left + paddingObject.right)
+            .attr("height",heightGraph + paddingObject.top + paddingObject.bottom)
+      var widthBars = d3.scale.linear().range([0,widthGraph])
+      var heightBars = d3.scale.ordinal().rangeBands([paddingObject.top,paddingObject.top + heightGraph],0.2)
+      var xAxisFunction = d3.svg.axis().scale(widthBars).orient("bottom")
+      var yAxisFunction = d3.svg.axis().scale(heightBars).orient("left")
+      d3.csv("violencia.csv", function(dataFromCSV) {
+          //ORDENAR DATOS
+          dataFromCSV.sort(function(a,b) {
+            return d3.descending(+a.Año);
+          });
+          widthBars.domain([0,d3.max(dataFromCSV,function(d,i) { return d.Numero_mujeres * 1.1})])
+          heightBars.domain(dataFromCSV.map(function(d,i) { return d.Año}))
+          var items = d3.select("svg").selectAll("rect").data(dataFromCSV)          
+          //ENTER
+          items.enter().append("rect")
+            .attr("x",paddingObject.left)
+            .attr("y",function(d,i) {
+              return heightBars(d.Año)
+            })
+            .attr("width",function(d) {
+              return widthBars(d.Numero_mujeres) 
+            })
+            .attr("height",heightBars.rangeBand())
+            .append("title")
+            .text(function(d) {
+              return d.Año + ": " + d.Numero_mujeres + " Número mujeres "
+            });;
+            svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform","translate(" + paddingObject.left + "," + (paddingObject.top + heightGraph + 5) + ")")
+              .call(xAxisFunction)
+            svg.append("g")
+              .attr("class", "y axis")
+              .attr("transform","translate(" + (paddingObject.left ) + ",0)")
+              .call(yAxisFunction)
+      });
+    </script>
+  </body>
+</html>
